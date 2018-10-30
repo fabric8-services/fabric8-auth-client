@@ -471,20 +471,18 @@ Payload example:
 {
    "data": [
       {
-         "id": "Sed commodi autem distinctio nesciunt tempora.",
+         "id": "Occaecati neque ab.",
          "type": "identities"
       },
       {
-         "id": "Sed commodi autem distinctio nesciunt tempora.",
-         "type": "identities"
-      },
-      {
-         "id": "Sed commodi autem distinctio nesciunt tempora.",
+         "id": "Occaecati neque ab.",
          "type": "identities"
       }
    ],
    "included": [
-      0.3144925040108725
+      "c3d4ab19-6e68-4681-a613-0cc5952e49be",
+      "c3d4ab19-6e68-4681-a613-0cc5952e49be",
+      "c3d4ab19-6e68-4681-a613-0cc5952e49be"
    ]
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
@@ -765,12 +763,12 @@ Payload example:
 Payload example:
 
 {
-   "client_id": "Nam quos.",
-   "client_secret": "Est vel voluptatibus.",
-   "code": "Aliquam et et architecto nam repellat.",
+   "client_id": "Ut aliquam et et architecto nam.",
+   "client_secret": "Voluptatem quasi rem voluptatum.",
+   "code": "Consequatur qui a sunt.",
    "grant_type": "refresh_token",
-   "redirect_uri": "Rem voluptatum fuga consequatur qui a sunt.",
-   "refresh_token": "Repudiandae vel ducimus."
+   "redirect_uri": "Vel ducimus nulla et libero doloribus qui.",
+   "refresh_token": "Corporis quis."
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp18.Run(c, args) },
 	}
@@ -981,7 +979,7 @@ Payload example:
 Payload example:
 
 {
-   "refresh_token": "Et libero doloribus qui iste."
+   "refresh_token": "Cupiditate fuga quia quae ut ipsam."
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp34.Run(c, args) },
 	}
@@ -1002,9 +1000,10 @@ Payload example:
 Payload example:
 
 {
-   "parent_resource_id": "Dignissimos distinctio eum est corrupti non maiores.",
-   "resource_id": "Dolorem quaerat voluptas quia voluptatibus quia.",
-   "type": "Enim ad."
+   "identity_id": "Dignissimos distinctio eum est corrupti non maiores.",
+   "parent_resource_id": "Dolorem quaerat voluptas quia voluptatibus quia.",
+   "resource_id": "Enim ad.",
+   "type": "Aliquam aut omnis sint eveniet."
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp35.Run(c, args) },
 	}
@@ -1041,20 +1040,18 @@ Payload example:
 {
    "data": [
       {
-         "id": "Sed commodi autem distinctio nesciunt tempora.",
+         "id": "Occaecati neque ab.",
          "type": "identities"
       },
       {
-         "id": "Sed commodi autem distinctio nesciunt tempora.",
-         "type": "identities"
-      },
-      {
-         "id": "Sed commodi autem distinctio nesciunt tempora.",
+         "id": "Occaecati neque ab.",
          "type": "identities"
       }
    ],
    "included": [
-      0.3144925040108725
+      "c3d4ab19-6e68-4681-a613-0cc5952e49be",
+      "c3d4ab19-6e68-4681-a613-0cc5952e49be",
+      "c3d4ab19-6e68-4681-a613-0cc5952e49be"
    ]
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp37.Run(c, args) },
@@ -1216,21 +1213,21 @@ Payload example:
 {
    "data": {
       "attributes": {
-         "bio": "Nobis deleniti voluptatibus.",
-         "company": "Repellat tenetur explicabo velit.",
+         "bio": "Sed aperiam voluptatum.",
+         "company": "Doloribus numquam.",
          "contextInformation": {
             "last_visited_url": "https://a.openshift.io",
             "space": "3d6dab8d-f204-42e8-ab29-cdb1c93130ad"
          },
          "deprovisioned": false,
-         "email": "Modi commodi rerum quae.",
-         "emailPrivate": true,
-         "featureLevel": "Aperiam voluptatum et doloribus numquam dolores quis.",
-         "fullName": "Alias consequatur.",
-         "imageURL": "Totam soluta sit.",
+         "email": "Nostrum alias consequatur consequatur totam soluta sit.",
+         "emailPrivate": false,
+         "featureLevel": "Voluptate atque et ut a.",
+         "fullName": "Aut aut est qui tempora.",
+         "imageURL": "Et temporibus est architecto sed.",
          "registrationCompleted": false,
-         "url": "Voluptate atque et ut a.",
-         "username": "Aut aut est qui tempora."
+         "url": "Sed commodi autem distinctio nesciunt tempora.",
+         "username": "Deleniti natus ipsam et voluptas deserunt."
       },
       "links": {
          "meta": {
@@ -1239,7 +1236,7 @@ Payload example:
          "related": "Rem eligendi consectetur voluptas.",
          "self": "Error doloremque."
       },
-      "type": "Et temporibus est architecto sed."
+      "type": "Quia ea dolorum dignissimos maiores."
    }
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp50.Run(c, args) },

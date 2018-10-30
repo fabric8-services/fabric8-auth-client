@@ -51,6 +51,8 @@ func (c *Client) NewDeleteResourceRequest(ctx context.Context, path string) (*ht
 
 // RegisterResourcePayload is the resource register action payload.
 type RegisterResourcePayload struct {
+	// The identity who would be provided the scope to manage this resource, If left blank, nobody would be assigned the scope to manage this resource
+	IdentityID *string `form:"identity_id,omitempty" json:"identity_id,omitempty" xml:"identity_id,omitempty"`
 	// The parent resource (of the same type) to which this resource belongs
 	ParentResourceID *string `form:"parent_resource_id,omitempty" json:"parent_resource_id,omitempty" xml:"parent_resource_id,omitempty"`
 	// The identifier for this resource. If left blank, one will be generated
