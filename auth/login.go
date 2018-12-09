@@ -18,6 +18,43 @@ import (
 	"net/url"
 )
 
+// CallbackLoginPath computes a request path to the callback action of login.
+func CallbackLoginPath() string {
+
+	return fmt.Sprintf("/api/login/callback")
+}
+
+// Authorization code callback
+func (c *Client) CallbackLogin(ctx context.Context, path string, code *string, state *string) (*http.Response, error) {
+	req, err := c.NewCallbackLoginRequest(ctx, path, code, state)
+	if err != nil {
+		return nil, err
+	}
+	return c.Client.Do(ctx, req)
+}
+
+// NewCallbackLoginRequest create the request corresponding to the callback action endpoint of the login resource.
+func (c *Client) NewCallbackLoginRequest(ctx context.Context, path string, code *string, state *string) (*http.Request, error) {
+	scheme := c.Scheme
+	if scheme == "" {
+		scheme = "http"
+	}
+	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
+	values := u.Query()
+	if code != nil {
+		values.Set("code", *code)
+	}
+	if state != nil {
+		values.Set("state", *state)
+	}
+	u.RawQuery = values.Encode()
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // LoginLoginPath computes a request path to the login action of login.
 func LoginLoginPath() string {
 

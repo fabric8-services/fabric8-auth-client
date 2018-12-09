@@ -25,8 +25,8 @@ func LogoutLogoutPath() string {
 }
 
 // Logout user
-func (c *Client) LogoutLogout(ctx context.Context, path string, redirect *string) (*http.Response, error) {
-	req, err := c.NewLogoutLogoutRequest(ctx, path, redirect)
+func (c *Client) LogoutLogout(ctx context.Context, path string, redirect *string, referer *string) (*http.Response, error) {
+	req, err := c.NewLogoutLogoutRequest(ctx, path, redirect, referer)
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +34,7 @@ func (c *Client) LogoutLogout(ctx context.Context, path string, redirect *string
 }
 
 // NewLogoutLogoutRequest create the request corresponding to the logout action endpoint of the logout resource.
-func (c *Client) NewLogoutLogoutRequest(ctx context.Context, path string, redirect *string) (*http.Request, error) {
+func (c *Client) NewLogoutLogoutRequest(ctx context.Context, path string, redirect *string, referer *string) (*http.Request, error) {
 	scheme := c.Scheme
 	if scheme == "" {
 		scheme = "http"
@@ -48,6 +48,11 @@ func (c *Client) NewLogoutLogoutRequest(ctx context.Context, path string, redire
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
+	}
+	header := req.Header
+	if referer != nil {
+
+		header.Set("Referer", *referer)
 	}
 	return req, nil
 }

@@ -67,30 +67,6 @@ func (c *Client) DecodeAuthToken(resp *http.Response) (*AuthToken, error) {
 	return &decoded, err
 }
 
-// AuthTokenCollection is the media type for an array of AuthToken (default view)
-//
-// Identifier: application/vnd.authtoken+json; type=collection; view=default
-type AuthTokenCollection []*AuthToken
-
-// Validate validates the AuthTokenCollection media type instance.
-func (mt AuthTokenCollection) Validate() (err error) {
-	for _, e := range mt {
-		if e != nil {
-			if err2 := e.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	return
-}
-
-// DecodeAuthTokenCollection decodes the AuthTokenCollection instance encoded in resp body.
-func (c *Client) DecodeAuthTokenCollection(resp *http.Response) (AuthTokenCollection, error) {
-	var decoded AuthTokenCollection
-	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
-	return decoded, err
-}
-
 // Holds the response to a cluster list request (default view)
 //
 // Identifier: application/vnd.clusterlist+json; view=default
