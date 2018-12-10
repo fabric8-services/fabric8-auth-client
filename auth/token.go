@@ -98,6 +98,39 @@ func (c *Client) NewExchangeTokenRequest(ctx context.Context, path string, paylo
 	return req, nil
 }
 
+// LinkCallbackTokenPath computes a request path to the LinkCallback action of token.
+func LinkCallbackTokenPath() string {
+
+	return fmt.Sprintf("/api/token/link/callback")
+}
+
+// Callback from an external oauth2 resource provider such as GitHub as part of user's account linking
+func (c *Client) LinkCallbackToken(ctx context.Context, path string, code string, state string) (*http.Response, error) {
+	req, err := c.NewLinkCallbackTokenRequest(ctx, path, code, state)
+	if err != nil {
+		return nil, err
+	}
+	return c.Client.Do(ctx, req)
+}
+
+// NewLinkCallbackTokenRequest create the request corresponding to the LinkCallback action endpoint of the token resource.
+func (c *Client) NewLinkCallbackTokenRequest(ctx context.Context, path string, code string, state string) (*http.Request, error) {
+	scheme := c.Scheme
+	if scheme == "" {
+		scheme = "http"
+	}
+	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
+	values := u.Query()
+	values.Set("code", code)
+	values.Set("state", state)
+	u.RawQuery = values.Encode()
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // RetrieveTokenPath computes a request path to the Retrieve action of token.
 func RetrieveTokenPath() string {
 
@@ -207,68 +240,6 @@ func (c *Client) NewAuditTokenRequest(ctx context.Context, path string, resource
 	}
 	if c.JWTSigner != nil {
 		c.JWTSigner.Sign(req)
-	}
-	return req, nil
-}
-
-// CallbackTokenPath computes a request path to the callback action of token.
-func CallbackTokenPath() string {
-
-	return fmt.Sprintf("/api/token/link/callback")
-}
-
-// Callback from an external oauth2 resource provider such as GitHub as part of user's account linking
-func (c *Client) CallbackToken(ctx context.Context, path string, code string, state string) (*http.Response, error) {
-	req, err := c.NewCallbackTokenRequest(ctx, path, code, state)
-	if err != nil {
-		return nil, err
-	}
-	return c.Client.Do(ctx, req)
-}
-
-// NewCallbackTokenRequest create the request corresponding to the callback action endpoint of the token resource.
-func (c *Client) NewCallbackTokenRequest(ctx context.Context, path string, code string, state string) (*http.Request, error) {
-	scheme := c.Scheme
-	if scheme == "" {
-		scheme = "http"
-	}
-	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
-	values := u.Query()
-	values.Set("code", code)
-	values.Set("state", state)
-	u.RawQuery = values.Encode()
-	req, err := http.NewRequest("GET", u.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// GenerateTokenPath computes a request path to the generate action of token.
-func GenerateTokenPath() string {
-
-	return fmt.Sprintf("/api/token/generate")
-}
-
-// Generate a set of Tokens for different Auth levels. NOT FOR PRODUCTION. Only available if server is running in dev mode
-func (c *Client) GenerateToken(ctx context.Context, path string) (*http.Response, error) {
-	req, err := c.NewGenerateTokenRequest(ctx, path)
-	if err != nil {
-		return nil, err
-	}
-	return c.Client.Do(ctx, req)
-}
-
-// NewGenerateTokenRequest create the request corresponding to the generate action endpoint of the token resource.
-func (c *Client) NewGenerateTokenRequest(ctx context.Context, path string) (*http.Request, error) {
-	scheme := c.Scheme
-	if scheme == "" {
-		scheme = "http"
-	}
-	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
-	req, err := http.NewRequest("GET", u.String(), nil)
-	if err != nil {
-		return nil, err
 	}
 	return req, nil
 }
