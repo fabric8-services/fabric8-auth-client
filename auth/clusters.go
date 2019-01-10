@@ -18,6 +18,38 @@ import (
 	"net/url"
 )
 
+// LinkExistingIdentitiesToClusterClustersPath computes a request path to the linkExistingIdentitiesToCluster action of clusters.
+func LinkExistingIdentitiesToClusterClustersPath() string {
+
+	return fmt.Sprintf("/api/clusters/identities/link")
+}
+
+// Link identities to clusters
+func (c *Client) LinkExistingIdentitiesToClusterClusters(ctx context.Context, path string) (*http.Response, error) {
+	req, err := c.NewLinkExistingIdentitiesToClusterClustersRequest(ctx, path)
+	if err != nil {
+		return nil, err
+	}
+	return c.Client.Do(ctx, req)
+}
+
+// NewLinkExistingIdentitiesToClusterClustersRequest create the request corresponding to the linkExistingIdentitiesToCluster action endpoint of the clusters resource.
+func (c *Client) NewLinkExistingIdentitiesToClusterClustersRequest(ctx context.Context, path string) (*http.Request, error) {
+	scheme := c.Scheme
+	if scheme == "" {
+		scheme = "http"
+	}
+	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
+	req, err := http.NewRequest("POST", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
+	}
+	return req, nil
+}
+
 // ShowClustersPath computes a request path to the show action of clusters.
 func ShowClustersPath() string {
 
