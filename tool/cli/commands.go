@@ -156,6 +156,14 @@ type (
 		PrettyPrint bool
 	}
 
+	// Logoutv2LogoutCommand is the command line data structure for the logoutv2 action of logout
+	Logoutv2LogoutCommand struct {
+		// URL to be redirected to after successful logout. If not set then will redirect to the referrer instead.
+		Redirect    string
+		Referer     string
+		PrettyPrint bool
+	}
+
 	// DeprovisionNamedusersCommand is the command line data structure for the deprovision action of namedusers
 	DeprovisionNamedusersCommand struct {
 		// Username
@@ -485,9 +493,9 @@ Payload example:
       }
    ],
    "included": [
-      "01be9eaa-32fd-47d9-b7dc-caa14b78f3b6",
-      "01be9eaa-32fd-47d9-b7dc-caa14b78f3b6",
-      "01be9eaa-32fd-47d9-b7dc-caa14b78f3b6"
+      "271e1733-62d4-48f0-bd35-69020732fd51",
+      "271e1733-62d4-48f0-bd35-69020732fd51",
+      "271e1733-62d4-48f0-bd35-69020732fd51"
    ]
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
@@ -971,10 +979,24 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
+		Use:   "logoutv2",
+		Short: `Logout user`,
+	}
+	tmp34 := new(Logoutv2LogoutCommand)
+	sub = &cobra.Command{
+		Use:   `logout ["/api/logout/v2"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp34.Run(c, args) },
+	}
+	tmp34.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp34.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
 		Use:   "refresh",
 		Short: `Refresh access token`,
 	}
-	tmp34 := new(RefreshTokenCommand)
+	tmp35 := new(RefreshTokenCommand)
 	sub = &cobra.Command{
 		Use:   `token ["/api/token/refresh"]`,
 		Short: ``,
@@ -985,17 +1007,17 @@ Payload example:
 {
    "refresh_token": "Cupiditate fuga quia quae ut ipsam."
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp34.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp35.Run(c, args) },
 	}
-	tmp34.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp34.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp35.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp35.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "register",
 		Short: `Register a new resource`,
 	}
-	tmp35 := new(RegisterResourceCommand)
+	tmp36 := new(RegisterResourceCommand)
 	sub = &cobra.Command{
 		Use:   `resource ["/api/resource"]`,
 		Short: ``,
@@ -1009,31 +1031,31 @@ Payload example:
    "resource_id": "Enim ad.",
    "type": "Aliquam aut omnis sint eveniet."
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp35.Run(c, args) },
-	}
-	tmp35.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp35.PrettyPrint, "pp", false, "Pretty print response body")
-	command.AddCommand(sub)
-	app.AddCommand(command)
-	command = &cobra.Command{
-		Use:   "remove",
-		Short: `Remove a user from the list of space collaborators.`,
-	}
-	tmp36 := new(RemoveCollaboratorsCommand)
-	sub = &cobra.Command{
-		Use:   `collaborators ["/api/spaces/SPACEID/collaborators/IDENTITYID"]`,
-		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp36.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp36.Run(c, args) },
 	}
 	tmp36.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp36.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
+		Use:   "remove",
+		Short: `Remove a user from the list of space collaborators.`,
+	}
+	tmp37 := new(RemoveCollaboratorsCommand)
+	sub = &cobra.Command{
+		Use:   `collaborators ["/api/spaces/SPACEID/collaborators/IDENTITYID"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp37.Run(c, args) },
+	}
+	tmp37.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp37.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
 		Use:   "remove-many",
 		Short: `Remove users form the list of space collaborators.`,
 	}
-	tmp37 := new(RemoveManyCollaboratorsCommand)
+	tmp38 := new(RemoveManyCollaboratorsCommand)
 	sub = &cobra.Command{
 		Use:   `collaborators ["/api/spaces/SPACEID/collaborators"]`,
 		Short: ``,
@@ -1053,38 +1075,24 @@ Payload example:
       }
    ],
    "included": [
-      "01be9eaa-32fd-47d9-b7dc-caa14b78f3b6",
-      "01be9eaa-32fd-47d9-b7dc-caa14b78f3b6",
-      "01be9eaa-32fd-47d9-b7dc-caa14b78f3b6"
+      "271e1733-62d4-48f0-bd35-69020732fd51",
+      "271e1733-62d4-48f0-bd35-69020732fd51",
+      "271e1733-62d4-48f0-bd35-69020732fd51"
    ]
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp37.Run(c, args) },
-	}
-	tmp37.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp37.PrettyPrint, "pp", false, "Pretty print response body")
-	command.AddCommand(sub)
-	app.AddCommand(command)
-	command = &cobra.Command{
-		Use:   "rescind-invite",
-		Short: ``,
-	}
-	tmp38 := new(RescindInviteInvitationCommand)
-	sub = &cobra.Command{
-		Use:   `invitation ["/api/invitations/INVITETO"]`,
-		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp38.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp38.Run(c, args) },
 	}
 	tmp38.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp38.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "retrieve",
-		Short: `Get the external token for resources belonging to external providers like Github and OpenShift. If the token is missing or not valid then 401 Unauthorized status with 'WWW-Authenticate: LINK url=<url>, description=<error_description>' header will be returned. For example: 'WWW-Authenticate: LINK url=https://auth.openshift.io/api/token/link?for=https://github.com, description="GitHub token is missing. Link GitHub account"'`,
+		Use:   "rescind-invite",
+		Short: ``,
 	}
-	tmp39 := new(RetrieveTokenCommand)
+	tmp39 := new(RescindInviteInvitationCommand)
 	sub = &cobra.Command{
-		Use:   `token ["/api/token"]`,
+		Use:   `invitation ["/api/invitations/INVITETO"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp39.Run(c, args) },
 	}
@@ -1093,12 +1101,12 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "scopes",
-		Short: `List scopes for a resource`,
+		Use:   "retrieve",
+		Short: `Get the external token for resources belonging to external providers like Github and OpenShift. If the token is missing or not valid then 401 Unauthorized status with 'WWW-Authenticate: LINK url=<url>, description=<error_description>' header will be returned. For example: 'WWW-Authenticate: LINK url=https://auth.openshift.io/api/token/link?for=https://github.com, description="GitHub token is missing. Link GitHub account"'`,
 	}
-	tmp40 := new(ScopesResourceCommand)
+	tmp40 := new(RetrieveTokenCommand)
 	sub = &cobra.Command{
-		Use:   `resource ["/api/resource/RESOURCEID/scopes"]`,
+		Use:   `token ["/api/token"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp40.Run(c, args) },
 	}
@@ -1107,12 +1115,12 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "send-email-verification-code",
-		Short: `Send a verification code to the user's email address`,
+		Use:   "scopes",
+		Short: `List scopes for a resource`,
 	}
-	tmp41 := new(SendEmailVerificationCodeUsersCommand)
+	tmp41 := new(ScopesResourceCommand)
 	sub = &cobra.Command{
-		Use:   `users ["/api/users/verificationcode"]`,
+		Use:   `resource ["/api/resource/RESOURCEID/scopes"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp41.Run(c, args) },
 	}
@@ -1121,80 +1129,80 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "show",
-		Short: `show action`,
+		Use:   "send-email-verification-code",
+		Short: `Send a verification code to the user's email address`,
 	}
-	tmp42 := new(ShowClustersCommand)
+	tmp42 := new(SendEmailVerificationCodeUsersCommand)
 	sub = &cobra.Command{
-		Use:   `clusters ["/api/clusters/"]`,
+		Use:   `users ["/api/users/verificationcode"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp42.Run(c, args) },
 	}
 	tmp42.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp42.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	tmp43 := new(ShowOpenidConfigurationCommand)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "show",
+		Short: `show action`,
+	}
+	tmp43 := new(ShowClustersCommand)
 	sub = &cobra.Command{
-		Use:   `openid-configuration ["/api/.well-known/openid-configuration"]`,
+		Use:   `clusters ["/api/clusters/"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp43.Run(c, args) },
 	}
 	tmp43.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp43.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	tmp44 := new(ShowResourceCommand)
+	tmp44 := new(ShowOpenidConfigurationCommand)
 	sub = &cobra.Command{
-		Use:   `resource ["/api/resource/RESOURCEID"]`,
+		Use:   `openid-configuration ["/api/.well-known/openid-configuration"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp44.Run(c, args) },
 	}
 	tmp44.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp44.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	tmp45 := new(ShowStatusCommand)
+	tmp45 := new(ShowResourceCommand)
 	sub = &cobra.Command{
-		Use:   `status ["/api/status"]`,
+		Use:   `resource ["/api/resource/RESOURCEID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp45.Run(c, args) },
 	}
 	tmp45.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp45.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	tmp46 := new(ShowUserCommand)
+	tmp46 := new(ShowStatusCommand)
 	sub = &cobra.Command{
-		Use:   `user ["/api/user"]`,
+		Use:   `status ["/api/status"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp46.Run(c, args) },
 	}
 	tmp46.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp46.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	tmp47 := new(ShowUserinfoCommand)
+	tmp47 := new(ShowUserCommand)
 	sub = &cobra.Command{
-		Use:   `userinfo ["/api/userinfo"]`,
+		Use:   `user ["/api/user"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp47.Run(c, args) },
 	}
 	tmp47.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp47.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	tmp48 := new(ShowUsersCommand)
+	tmp48 := new(ShowUserinfoCommand)
 	sub = &cobra.Command{
-		Use:   `users ["/api/users/ID"]`,
+		Use:   `userinfo ["/api/userinfo"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp48.Run(c, args) },
 	}
 	tmp48.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp48.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	app.AddCommand(command)
-	command = &cobra.Command{
-		Use:   "status",
-		Short: `Check if the external token is available. Returns 200 OK if the token is available and 401 Unauthorized if no token available`,
-	}
-	tmp49 := new(StatusTokenCommand)
+	tmp49 := new(ShowUsersCommand)
 	sub = &cobra.Command{
-		Use:   `token ["/api/token/status"]`,
+		Use:   `users ["/api/users/ID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp49.Run(c, args) },
 	}
@@ -1203,10 +1211,24 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
+		Use:   "status",
+		Short: `Check if the external token is available. Returns 200 OK if the token is available and 401 Unauthorized if no token available`,
+	}
+	tmp50 := new(StatusTokenCommand)
+	sub = &cobra.Command{
+		Use:   `token ["/api/token/status"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp50.Run(c, args) },
+	}
+	tmp50.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp50.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
 		Use:   "update",
 		Short: `update the authenticated user`,
 	}
-	tmp50 := new(UpdateUsersCommand)
+	tmp51 := new(UpdateUsersCommand)
 	sub = &cobra.Command{
 		Use:   `users ["/api/users"]`,
 		Short: ``,
@@ -1243,38 +1265,38 @@ Payload example:
       "type": "Quia ea dolorum dignissimos maiores."
    }
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp50.Run(c, args) },
-	}
-	tmp50.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp50.PrettyPrint, "pp", false, "Pretty print response body")
-	command.AddCommand(sub)
-	app.AddCommand(command)
-	command = &cobra.Command{
-		Use:   "users",
-		Short: `Search by fullname`,
-	}
-	tmp51 := new(UsersSearchCommand)
-	sub = &cobra.Command{
-		Use:   `search ["/api/search/users"]`,
-		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp51.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp51.Run(c, args) },
 	}
 	tmp51.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp51.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "verify-email",
-		Short: `Verify if the new email updated by the user is a valid email`,
+		Use:   "users",
+		Short: `Search by fullname`,
 	}
-	tmp52 := new(VerifyEmailUsersCommand)
+	tmp52 := new(UsersSearchCommand)
 	sub = &cobra.Command{
-		Use:   `users ["/api/users/verifyemail"]`,
+		Use:   `search ["/api/search/users"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp52.Run(c, args) },
 	}
 	tmp52.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp52.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "verify-email",
+		Short: `Verify if the new email updated by the user is a valid email`,
+	}
+	tmp53 := new(VerifyEmailUsersCommand)
+	sub = &cobra.Command{
+		Use:   `users ["/api/users/verifyemail"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp53.Run(c, args) },
+	}
+	tmp53.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp53.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 }
@@ -1847,6 +1869,33 @@ func (cmd *LogoutLogoutCommand) Run(c *auth.Client, args []string) error {
 
 // RegisterFlags registers the command flags with the command line.
 func (cmd *LogoutLogoutCommand) RegisterFlags(cc *cobra.Command, c *auth.Client) {
+	var redirect string
+	cc.Flags().StringVar(&cmd.Redirect, "redirect", redirect, `URL to be redirected to after successful logout. If not set then will redirect to the referrer instead.`)
+	cc.Flags().StringVar(&cmd.Referer, "Referer", "", ``)
+}
+
+// Run makes the HTTP request corresponding to the Logoutv2LogoutCommand command.
+func (cmd *Logoutv2LogoutCommand) Run(c *auth.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = "/api/logout/v2"
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.Logoutv2Logout(ctx, path, stringFlagVal("redirect", cmd.Redirect), stringFlagVal("Referer", cmd.Referer))
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *Logoutv2LogoutCommand) RegisterFlags(cc *cobra.Command, c *auth.Client) {
 	var redirect string
 	cc.Flags().StringVar(&cmd.Redirect, "redirect", redirect, `URL to be redirected to after successful logout. If not set then will redirect to the referrer instead.`)
 	cc.Flags().StringVar(&cmd.Referer, "Referer", "", ``)
@@ -2499,16 +2548,16 @@ func (cmd *RetrieveTokenCommand) Run(c *auth.Client, args []string) error {
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	var tmp53 *bool
+	var tmp54 *bool
 	if cmd.ForcePull != "" {
 		var err error
-		tmp53, err = boolVal(cmd.ForcePull)
+		tmp54, err = boolVal(cmd.ForcePull)
 		if err != nil {
 			goa.LogError(ctx, "failed to parse flag into *bool value", "flag", "--force_pull", "err", err)
 			return err
 		}
 	}
-	resp, err := c.RetrieveToken(ctx, path, cmd.For, tmp53)
+	resp, err := c.RetrieveToken(ctx, path, cmd.For, tmp54)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err
@@ -2536,16 +2585,16 @@ func (cmd *StatusTokenCommand) Run(c *auth.Client, args []string) error {
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	var tmp54 *bool
+	var tmp55 *bool
 	if cmd.ForcePull != "" {
 		var err error
-		tmp54, err = boolVal(cmd.ForcePull)
+		tmp55, err = boolVal(cmd.ForcePull)
 		if err != nil {
 			goa.LogError(ctx, "failed to parse flag into *bool value", "flag", "--force_pull", "err", err)
 			return err
 		}
 	}
-	resp, err := c.StatusToken(ctx, path, cmd.For, tmp54)
+	resp, err := c.StatusToken(ctx, path, cmd.For, tmp55)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err

@@ -56,3 +56,45 @@ func (c *Client) NewLogoutLogoutRequest(ctx context.Context, path string, redire
 	}
 	return req, nil
 }
+
+// Logoutv2LogoutPath computes a request path to the logoutv2 action of logout.
+func Logoutv2LogoutPath() string {
+
+	return fmt.Sprintf("/api/logout/v2")
+}
+
+// Logout user
+func (c *Client) Logoutv2Logout(ctx context.Context, path string, redirect *string, referer *string) (*http.Response, error) {
+	req, err := c.NewLogoutv2LogoutRequest(ctx, path, redirect, referer)
+	if err != nil {
+		return nil, err
+	}
+	return c.Client.Do(ctx, req)
+}
+
+// NewLogoutv2LogoutRequest create the request corresponding to the logoutv2 action endpoint of the logout resource.
+func (c *Client) NewLogoutv2LogoutRequest(ctx context.Context, path string, redirect *string, referer *string) (*http.Request, error) {
+	scheme := c.Scheme
+	if scheme == "" {
+		scheme = "http"
+	}
+	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
+	values := u.Query()
+	if redirect != nil {
+		values.Set("redirect", *redirect)
+	}
+	u.RawQuery = values.Encode()
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	header := req.Header
+	if referer != nil {
+
+		header.Set("Referer", *referer)
+	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
+	}
+	return req, nil
+}
