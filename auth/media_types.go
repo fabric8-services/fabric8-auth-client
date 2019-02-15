@@ -911,6 +911,35 @@ func (c *Client) DecodeUserArray(resp *http.Response) (*UserArray, error) {
 	return &decoded, err
 }
 
+// User Token Array (default view)
+//
+// Identifier: application/vnd.user-token-array+json; view=default
+type UserTokenArray struct {
+	Data []*UserTokenData `form:"data" json:"data" xml:"data"`
+}
+
+// Validate validates the UserTokenArray media type instance.
+func (mt *UserTokenArray) Validate() (err error) {
+	if mt.Data == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "data"))
+	}
+	for _, e := range mt.Data {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
+	}
+	return
+}
+
+// DecodeUserTokenArray decodes the UserTokenArray instance encoded in resp body.
+func (c *Client) DecodeUserTokenArray(resp *http.Response) (*UserTokenArray, error) {
+	var decoded UserTokenArray
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
 // User Information (default view)
 //
 // Identifier: application/vnd.userinfo+json; view=default
