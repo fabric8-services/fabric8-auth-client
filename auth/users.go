@@ -19,6 +19,39 @@ import (
 	"net/url"
 )
 
+// RevokeAllTokensUsersPath computes a request path to the RevokeAllTokens action of users.
+func RevokeAllTokensUsersPath(id string) string {
+	param0 := id
+
+	return fmt.Sprintf("/api/users/%s/tokens", param0)
+}
+
+// Revokes all tokens for a specified identity id
+func (c *Client) RevokeAllTokensUsers(ctx context.Context, path string) (*http.Response, error) {
+	req, err := c.NewRevokeAllTokensUsersRequest(ctx, path)
+	if err != nil {
+		return nil, err
+	}
+	return c.Client.Do(ctx, req)
+}
+
+// NewRevokeAllTokensUsersRequest create the request corresponding to the RevokeAllTokens action endpoint of the users resource.
+func (c *Client) NewRevokeAllTokensUsersRequest(ctx context.Context, path string) (*http.Request, error) {
+	scheme := c.Scheme
+	if scheme == "" {
+		scheme = "http"
+	}
+	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
+	}
+	return req, nil
+}
+
 // CreateUsersPayload is the users create action payload.
 type CreateUsersPayload struct {
 	Data *CreateUserData `form:"data" json:"data" xml:"data"`
@@ -112,6 +145,39 @@ func (c *Client) NewListUsersRequest(ctx context.Context, path string, filterEma
 	if ifNoneMatch != nil {
 
 		header.Set("If-None-Match", *ifNoneMatch)
+	}
+	return req, nil
+}
+
+// ListTokensUsersPath computes a request path to the listTokens action of users.
+func ListTokensUsersPath(id string) string {
+	param0 := id
+
+	return fmt.Sprintf("/api/users/%s/tokens", param0)
+}
+
+// List all tokens for a specified user
+func (c *Client) ListTokensUsers(ctx context.Context, path string) (*http.Response, error) {
+	req, err := c.NewListTokensUsersRequest(ctx, path)
+	if err != nil {
+		return nil, err
+	}
+	return c.Client.Do(ctx, req)
+}
+
+// NewListTokensUsersRequest create the request corresponding to the listTokens action endpoint of the users resource.
+func (c *Client) NewListTokensUsersRequest(ctx context.Context, path string) (*http.Request, error) {
+	scheme := c.Scheme
+	if scheme == "" {
+		scheme = "http"
+	}
+	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
 	}
 	return req, nil
 }

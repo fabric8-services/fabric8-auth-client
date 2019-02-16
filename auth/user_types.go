@@ -1194,6 +1194,67 @@ func (ut *TokenExchange) Validate() (err error) {
 	return
 }
 
+// tokenPrivilegeData user type.
+type tokenPrivilegeData struct {
+	// resource identifier
+	ResourceID *string `form:"resource_id,omitempty" json:"resource_id,omitempty" xml:"resource_id,omitempty"`
+	// scopes granted for resource
+	Scopes *string `form:"scopes,omitempty" json:"scopes,omitempty" xml:"scopes,omitempty"`
+	// flag indicating whether these privileges are stale
+	Stale *bool `form:"stale,omitempty" json:"stale,omitempty" xml:"stale,omitempty"`
+}
+
+// Validate validates the tokenPrivilegeData type instance.
+func (ut *tokenPrivilegeData) Validate() (err error) {
+	if ut.ResourceID == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "resource_id"))
+	}
+	if ut.Scopes == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "scopes"))
+	}
+	if ut.Stale == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "stale"))
+	}
+	return
+}
+
+// Publicize creates TokenPrivilegeData from tokenPrivilegeData
+func (ut *tokenPrivilegeData) Publicize() *TokenPrivilegeData {
+	var pub TokenPrivilegeData
+	if ut.ResourceID != nil {
+		pub.ResourceID = *ut.ResourceID
+	}
+	if ut.Scopes != nil {
+		pub.Scopes = *ut.Scopes
+	}
+	if ut.Stale != nil {
+		pub.Stale = *ut.Stale
+	}
+	return &pub
+}
+
+// TokenPrivilegeData user type.
+type TokenPrivilegeData struct {
+	// resource identifier
+	ResourceID string `form:"resource_id" json:"resource_id" xml:"resource_id"`
+	// scopes granted for resource
+	Scopes string `form:"scopes" json:"scopes" xml:"scopes"`
+	// flag indicating whether these privileges are stale
+	Stale bool `form:"stale" json:"stale" xml:"stale"`
+}
+
+// Validate validates the TokenPrivilegeData type instance.
+func (ut *TokenPrivilegeData) Validate() (err error) {
+	if ut.ResourceID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "resource_id"))
+	}
+	if ut.Scopes == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "scopes"))
+	}
+
+	return
+}
+
 // updateIdentityDataAttributes user type.
 type updateIdentityDataAttributes struct {
 	// The bio
@@ -1683,6 +1744,100 @@ func (ut *UserResourceData) Validate() (err error) {
 	}
 	if ut.Type == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "type"))
+	}
+	return
+}
+
+// userTokenData user type.
+type userTokenData struct {
+	// token expiry time
+	ExpiryTime  *time.Time            `form:"expiry_time,omitempty" json:"expiry_time,omitempty" xml:"expiry_time,omitempty"`
+	Permissions []*tokenPrivilegeData `form:"permissions,omitempty" json:"permissions,omitempty" xml:"permissions,omitempty"`
+	// token status
+	Status *int `form:"status,omitempty" json:"status,omitempty" xml:"status,omitempty"`
+	// unique token identifier
+	TokenID *string `form:"token_id,omitempty" json:"token_id,omitempty" xml:"token_id,omitempty"`
+	// token type
+	TokenType *string `form:"token_type,omitempty" json:"token_type,omitempty" xml:"token_type,omitempty"`
+}
+
+// Validate validates the userTokenData type instance.
+func (ut *userTokenData) Validate() (err error) {
+	if ut.TokenID == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "token_id"))
+	}
+	if ut.Status == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "status"))
+	}
+	if ut.TokenType == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "token_type"))
+	}
+	if ut.ExpiryTime == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "expiry_time"))
+	}
+	for _, e := range ut.Permissions {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
+	}
+	return
+}
+
+// Publicize creates UserTokenData from userTokenData
+func (ut *userTokenData) Publicize() *UserTokenData {
+	var pub UserTokenData
+	if ut.ExpiryTime != nil {
+		pub.ExpiryTime = *ut.ExpiryTime
+	}
+	if ut.Permissions != nil {
+		pub.Permissions = make([]*TokenPrivilegeData, len(ut.Permissions))
+		for i2, elem2 := range ut.Permissions {
+			pub.Permissions[i2] = elem2.Publicize()
+		}
+	}
+	if ut.Status != nil {
+		pub.Status = *ut.Status
+	}
+	if ut.TokenID != nil {
+		pub.TokenID = *ut.TokenID
+	}
+	if ut.TokenType != nil {
+		pub.TokenType = *ut.TokenType
+	}
+	return &pub
+}
+
+// UserTokenData user type.
+type UserTokenData struct {
+	// token expiry time
+	ExpiryTime  time.Time             `form:"expiry_time" json:"expiry_time" xml:"expiry_time"`
+	Permissions []*TokenPrivilegeData `form:"permissions,omitempty" json:"permissions,omitempty" xml:"permissions,omitempty"`
+	// token status
+	Status int `form:"status" json:"status" xml:"status"`
+	// unique token identifier
+	TokenID string `form:"token_id" json:"token_id" xml:"token_id"`
+	// token type
+	TokenType string `form:"token_type" json:"token_type" xml:"token_type"`
+}
+
+// Validate validates the UserTokenData type instance.
+func (ut *UserTokenData) Validate() (err error) {
+	if ut.TokenID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "token_id"))
+	}
+
+	if ut.TokenType == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "token_type"))
+	}
+
+	for _, e := range ut.Permissions {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
 	}
 	return
 }
