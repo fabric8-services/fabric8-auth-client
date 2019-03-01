@@ -18,6 +18,39 @@ import (
 	"net/url"
 )
 
+// DeactivateNamedusersPath computes a request path to the deactivate action of namedusers.
+func DeactivateNamedusersPath(username string) string {
+	param0 := username
+
+	return fmt.Sprintf("/api/namedusers/%s/deactivate", param0)
+}
+
+// deactivate the user
+func (c *Client) DeactivateNamedusers(ctx context.Context, path string) (*http.Response, error) {
+	req, err := c.NewDeactivateNamedusersRequest(ctx, path)
+	if err != nil {
+		return nil, err
+	}
+	return c.Client.Do(ctx, req)
+}
+
+// NewDeactivateNamedusersRequest create the request corresponding to the deactivate action endpoint of the namedusers resource.
+func (c *Client) NewDeactivateNamedusersRequest(ctx context.Context, path string) (*http.Request, error) {
+	scheme := c.Scheme
+	if scheme == "" {
+		scheme = "http"
+	}
+	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
+	req, err := http.NewRequest("PATCH", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
+	}
+	return req, nil
+}
+
 // DeprovisionNamedusersPath computes a request path to the deprovision action of namedusers.
 func DeprovisionNamedusersPath(username string) string {
 	param0 := username

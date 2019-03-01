@@ -44,8 +44,8 @@ func (c *Client) NewUsersSearchRequest(ctx context.Context, path string, q strin
 	values := u.Query()
 	values.Set("q", q)
 	if pageLimit != nil {
-		tmp59 := strconv.Itoa(*pageLimit)
-		values.Set("page[limit]", tmp59)
+		tmp60 := strconv.Itoa(*pageLimit)
+		values.Set("page[limit]", tmp60)
 	}
 	if pageOffset != nil {
 		values.Set("page[offset]", *pageOffset)

@@ -134,8 +134,8 @@ func (c *Client) NewListCollaboratorsRequest(ctx context.Context, path string, p
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
 	if pageLimit != nil {
-		tmp58 := strconv.Itoa(*pageLimit)
-		values.Set("page[limit]", tmp58)
+		tmp59 := strconv.Itoa(*pageLimit)
+		values.Set("page[limit]", tmp59)
 	}
 	if pageOffset != nil {
 		values.Set("page[offset]", *pageOffset)
