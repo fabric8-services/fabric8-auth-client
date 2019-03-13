@@ -18,6 +18,39 @@ import (
 	"net/url"
 )
 
+// BanNamedusersPath computes a request path to the ban action of namedusers.
+func BanNamedusersPath(username string) string {
+	param0 := username
+
+	return fmt.Sprintf("/api/namedusers/%s/ban", param0)
+}
+
+// ban the user
+func (c *Client) BanNamedusers(ctx context.Context, path string) (*http.Response, error) {
+	req, err := c.NewBanNamedusersRequest(ctx, path)
+	if err != nil {
+		return nil, err
+	}
+	return c.Client.Do(ctx, req)
+}
+
+// NewBanNamedusersRequest create the request corresponding to the ban action endpoint of the namedusers resource.
+func (c *Client) NewBanNamedusersRequest(ctx context.Context, path string) (*http.Request, error) {
+	scheme := c.Scheme
+	if scheme == "" {
+		scheme = "http"
+	}
+	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
+	req, err := http.NewRequest("PATCH", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
+	}
+	return req, nil
+}
+
 // DeactivateNamedusersPath computes a request path to the deactivate action of namedusers.
 func DeactivateNamedusersPath(username string) string {
 	param0 := username

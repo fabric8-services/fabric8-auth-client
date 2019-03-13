@@ -1257,13 +1257,15 @@ func (ut *TokenPrivilegeData) Validate() (err error) {
 
 // updateIdentityDataAttributes user type.
 type updateIdentityDataAttributes struct {
+	// Whether the identity has been banned
+	Banned *bool `form:"banned,omitempty" json:"banned,omitempty" xml:"banned,omitempty"`
 	// The bio
 	Bio *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
 	// The company
 	Company *string `form:"company,omitempty" json:"company,omitempty" xml:"company,omitempty"`
 	// User context information of any type as a json
 	ContextInformation map[string]interface{} `form:"contextInformation,omitempty" json:"contextInformation,omitempty" xml:"contextInformation,omitempty"`
-	// Whether the identity has been deprovisioned
+	// Whether the identity has been deprovisioned (DEPRECATED: use 'banned' instead)
 	Deprovisioned *bool `form:"deprovisioned,omitempty" json:"deprovisioned,omitempty" xml:"deprovisioned,omitempty"`
 	// The email
 	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
@@ -1286,6 +1288,9 @@ type updateIdentityDataAttributes struct {
 // Publicize creates UpdateIdentityDataAttributes from updateIdentityDataAttributes
 func (ut *updateIdentityDataAttributes) Publicize() *UpdateIdentityDataAttributes {
 	var pub UpdateIdentityDataAttributes
+	if ut.Banned != nil {
+		pub.Banned = ut.Banned
+	}
 	if ut.Bio != nil {
 		pub.Bio = ut.Bio
 	}
@@ -1327,13 +1332,15 @@ func (ut *updateIdentityDataAttributes) Publicize() *UpdateIdentityDataAttribute
 
 // UpdateIdentityDataAttributes user type.
 type UpdateIdentityDataAttributes struct {
+	// Whether the identity has been banned
+	Banned *bool `form:"banned,omitempty" json:"banned,omitempty" xml:"banned,omitempty"`
 	// The bio
 	Bio *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
 	// The company
 	Company *string `form:"company,omitempty" json:"company,omitempty" xml:"company,omitempty"`
 	// User context information of any type as a json
 	ContextInformation map[string]interface{} `form:"contextInformation,omitempty" json:"contextInformation,omitempty" xml:"contextInformation,omitempty"`
-	// Whether the identity has been deprovisioned
+	// Whether the identity has been deprovisioned (DEPRECATED: use 'banned' instead)
 	Deprovisioned *bool `form:"deprovisioned,omitempty" json:"deprovisioned,omitempty" xml:"deprovisioned,omitempty"`
 	// The email
 	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`

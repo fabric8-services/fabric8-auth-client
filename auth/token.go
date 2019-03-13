@@ -156,8 +156,8 @@ func (c *Client) NewRetrieveTokenRequest(ctx context.Context, path string, for_ 
 	values := u.Query()
 	values.Set("for", for_)
 	if forcePull != nil {
-		tmp61 := strconv.FormatBool(*forcePull)
-		values.Set("force_pull", tmp61)
+		tmp62 := strconv.FormatBool(*forcePull)
+		values.Set("force_pull", tmp62)
 	}
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)
@@ -195,8 +195,8 @@ func (c *Client) NewStatusTokenRequest(ctx context.Context, path string, for_ st
 	values := u.Query()
 	values.Set("for", for_)
 	if forcePull != nil {
-		tmp62 := strconv.FormatBool(*forcePull)
-		values.Set("force_pull", tmp62)
+		tmp63 := strconv.FormatBool(*forcePull)
+		values.Set("force_pull", tmp63)
 	}
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)
